@@ -62,7 +62,9 @@
 
 #################################
 #############CHANGELOG###########
-
+#
+# 1.01  
+#       - SB_belly will not be created at World Origin (if the armature has been moved in object mode) anymore.
 # 1.0
 #       - Original version.
 
@@ -205,7 +207,7 @@ Obj_bellySB.shape_key_clear()      #modifiers can't be applied when the object h
 apply_modifiers(object = Obj_bellySB, modifier_list = [Mod_SB_belly.name], invert = True, delete_hidden = True)
 for i, e in zip(Obj_bellySB.data.vertices, Mesh_applmods.vertices):
     i.co = e.co
-O.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
+#O.object.parent_clear(type='CLEAR_KEEP_TRANSFORM') #at least for the Mass Effect "Liara" model from Rigid3D the model doesn't seem to be able to keep the transforms, so we'll have to keep the parent.
 O.object.transform_apply(location=True, rotation=True, scale=True)
 Obj_bellySB.animation_data_clear() #deletes all keyframes
 VG_goal_name    = Mod_SB_belly.settings.vertex_group_goal #the mod itself only returns a string instead of the required VG-type
