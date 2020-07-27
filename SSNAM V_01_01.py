@@ -17,7 +17,7 @@
 # ##### END GPL LICENSE BLOCK #####
 
 
-#Scriptname & version: Cardboy0's Softbody supporter for non-animated models - V.1.0  (I often forget to actually update this number so don't trust it)
+#Scriptname & version: Cardboy0's Softbody supporter for non-animated models - V.1.01  (I often forget to actually update this number so don't trust it)
 #Author: Cardboy0 (https://twitter.com/cardboy0)
 #Made for Blender 2.83
 
