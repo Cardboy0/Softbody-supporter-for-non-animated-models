@@ -17,9 +17,9 @@
 # ##### END GPL LICENSE BLOCK #####
 
 
-#Scriptname & version: Cardboy0's Softbody supporter for non-animated models - V.1.01  (I often forget to actually update this number so don't trust it)
+#Scriptname & version: Cardboy0's Softbody supporter for non-animated models - V.1.1.2  (I often forget to actually update this number so don't trust it)
 #Author: Cardboy0 (https://twitter.com/cardboy0)
-#Made for Blender 2.83
+#Made for Blender 2.91
 
 
 
@@ -62,7 +62,9 @@
 
 #################################
 #############CHANGELOG###########
-#
+
+# 1.01.2
+#       - Extremely minor changes so it should now work with Blender 2.91
 # 1.01  
 #       - SB_belly will not be created at World Origin (if the armature has been moved in object mode) anymore.
 # 1.0
@@ -121,7 +123,7 @@ def apply_modifiers(object, modifier_list = [], invert = False, delete_hidden = 
             if i in object.modifiers.keys():
                 if object.modifiers[i].show_viewport == True:
                     try:
-                        O.object.modifier_apply(override, apply_as='DATA', modifier = i)
+                        O.object.modifier_apply(override, modifier = i)
                     except RuntimeError:
                         print("OOPS! MODIFIER", i, "IS DISABLED! IT WILL BE DELETED") #trying to apply a disabled modifiier leads to an error message, but I didn't figure out how to check if it's disabled. Thus, we'll have to deal with the error instead.
                         print("ERROR TYPE IS", sys.exc_info()[0])
@@ -131,7 +133,7 @@ def apply_modifiers(object, modifier_list = [], invert = False, delete_hidden = 
     elif delete_hidden == False:
         for i in modifier_list:
             if i in object.modifiers.keys():
-                O.object.modifier_apply(override, apply_as='DATA', modifier = i)
+                O.object.modifier_apply(override, modifier = i)
 
 
 #checks if there already are any collections inside the target_collection that start with the collection_name (so it can detect e.g. myCollection.001 if you search for any myCollection). Returns the first found collection, or False if none were found. Checks child collections of child collections as well, and so on.
