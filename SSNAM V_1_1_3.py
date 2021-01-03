@@ -17,7 +17,7 @@
 # ##### END GPL LICENSE BLOCK #####
 
 
-#Scriptname & version: Cardboy0's Softbody supporter for non-animated models - V.1.1.2  (I often forget to actually update this number so don't trust it)
+#Scriptname & version: Cardboy0's Softbody supporter for non-animated models - V.1.1.3  (I often forget to actually update this number so don't trust it)
 #Author: Cardboy0 (https://twitter.com/cardboy0)
 #Made for Blender 2.91
 
@@ -63,6 +63,8 @@
 #################################
 #############CHANGELOG###########
 
+# 1.01.3
+#       - Script now automatically splits concave faces of the created and isolated softbody (no other objects) to convex, since concave faces prevent any surface deform modifiers the script adds from working.
 # 1.01.2
 #       - Extremely minor changes so it should now work with Blender 2.91
 # 1.01  
@@ -224,6 +226,11 @@ Mod_VGedit.vertex_group = VG_goal.name
 Mod_VGedit.use_remove = True
 Mod_VGedit.remove_threshold = 0.00000001
 apply_modifiers(Obj_bellySB, modifier_list = [Mod_datatransfer.name, Mod_VGedit.name])
+select_objects([Obj_bellySB])
+O.object.mode_set(mode='EDIT')
+O.mesh.select_all(action='SELECT')
+O.mesh.vert_connect_concave()
+O.object.mode_set(mode='OBJECT')
 
 
 
