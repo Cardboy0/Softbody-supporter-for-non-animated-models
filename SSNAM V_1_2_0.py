@@ -332,6 +332,8 @@ O.object.correctivesmooth_bind(modifier = Mod_cs_general.name)
 O.object.correctivesmooth_bind(modifier = Mod_cs_bellybutton.name)
 Mod_cs_general.show_viewport     = False
 Mod_cs_bellybutton.show_viewport = False
+Mod_cs_general.show_render     = False
+Mod_cs_bellybutton.show_render = False
 VG_placeholder = Obj_orig.vertex_groups.new(name = "(SSNAM script) empty Placeholder")
 Mod_cs_bellybutton.vertex_group = VG_placeholder.name
 Mod_surfdef.show_viewport = True
