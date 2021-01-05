@@ -55,7 +55,7 @@
 #       c. "belly_SB". This is the object you should use for any actual softbody baking. It's shape will be transfered to the copy (a.).
 #12. Add a new object to your scene (like a sphere), give it a collision modifier, set outer and inner thickness to 0.02 and have it run into your belly.
 #13. Bake your softbody simulation.
-#14. Result might look ugly. To fix, the copy (a.) has been given a new Corrective Smooth modifier. You just need to unhide it. 
+#14. Result might look ugly. To fix, the copy (a.) has been given two new Corrective Smooth modifiers. They need to be unhidden by you first. If you want to smooth the belly button of your model, you can create a new Vertex Group with belly button vertices assigned and choose it as the vertex group for the second Corrective Smooth modifier.
 
 
 
@@ -324,7 +324,7 @@ bpy.ops.object.surfacedeform_bind(modifier = Mod_surfdef.name)
 
 #This one isn't actually needed, just added it for comfort.
 Mod_cs_general     = Obj_orig.modifiers.new("(SSNAM-script) Corrective Smooth general","CORRECTIVE_SMOOTH")
-Mod_cs_bellybutton = Obj_orig.modifiers.new("(SSNAM-script) Corrective Smooth bellybutton(requires belly button VG)","CORRECTIVE_SMOOTH")
+Mod_cs_bellybutton = Obj_orig.modifiers.new("(SSNAM-script) Corrective Smooth bellybutton (needs VG)","CORRECTIVE_SMOOTH")
 Mod_surfdef.show_viewport = False
 Mod_cs_general.rest_source     = "BIND"
 Mod_cs_bellybutton.rest_source = "BIND"
