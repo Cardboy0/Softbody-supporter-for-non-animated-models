@@ -17,7 +17,7 @@
 # ##### END GPL LICENSE BLOCK #####
 
 
-#Scriptname & version: Cardboy0's Softbody supporter for non-animated models - V.1.1.3  (I often forget to actually update this number so don't trust it)
+#Scriptname & version: Cardboy0's Softbody supporter for non-animated models - V.1.2.0  (I often forget to actually update this number so don't trust it)
 #Author: Cardboy0 (https://twitter.com/cardboy0)
 #Made for Blender 2.91
 
@@ -63,11 +63,14 @@
 #################################
 #############CHANGELOG###########
 
-# 1.01.3
+# 1.2.0
+#       - Script now adds a second Corrective Smooth modifier, whose purpose is to smooth the belly button of the model. The mod needs a Vertex Group of the belly button to be able to do that.
+#       - renamed added mods so they now have (SSNAM-script) at the start of their name.
+# 1.1.3
 #       - Script now automatically splits concave faces of the created and isolated softbody (no other objects) to convex, since concave faces prevent any surface deform modifiers the script adds from working.
-# 1.01.2
+# 1.1.2
 #       - Extremely minor changes so it should now work with Blender 2.91
-# 1.01  
+# 1.1  
 #       - SB_belly will not be created at World Origin (if the armature has been moved in object mode) anymore.
 # 1.0
 #       - Original version.
@@ -216,8 +219,8 @@ O.object.transform_apply(location=True, rotation=True, scale=True)
 Obj_bellySB.animation_data_clear() #deletes all keyframes
 VG_goal_name    = Mod_SB_belly.settings.vertex_group_goal #the mod itself only returns a string instead of the required VG-type
 VG_goal         = Obj_bellySB.vertex_groups[VG_goal_name]
-Mod_datatransfer = Obj_bellySB.modifiers.new("transfer VGs","DATA_TRANSFER")
-Mod_VGedit       = Obj_bellySB.modifiers.new("remove 0 weights","VERTEX_WEIGHT_EDIT") #data transfer mod assigns unassigned verts with a weight of 0
+Mod_datatransfer = Obj_bellySB.modifiers.new("(SSNAM-script) transfer VGs","DATA_TRANSFER")
+Mod_VGedit       = Obj_bellySB.modifiers.new("(SSNAM-script) remove 0 weights","VERTEX_WEIGHT_EDIT") #data transfer mod assigns unassigned verts with a weight of 0
 Mod_datatransfer.object = Obj_orig  #source object
 Mod_datatransfer.use_vert_data = True
 Mod_datatransfer.data_types_verts = {'VGROUP_WEIGHTS'}
@@ -296,12 +299,12 @@ Obj_vwpref.name = "VWP reference object"
 
 
 
-VG_vwp = Obj_orig.vertex_groups.new(name = "VWP VG")
+VG_vwp = Obj_orig.vertex_groups.new(name = "(SSNAM script) VWP VG")
 vert_indices = []
 for i in Obj_orig.data.vertices:
     vert_indices += [i.index]
 VG_vwp.add(vert_indices, 1.0, "ADD")    #for some reason when we assign 0.0 it gives weird results
-Mod_vwp = Obj_orig.modifiers.new("get VG for surface deform mod","VERTEX_WEIGHT_PROXIMITY")
+Mod_vwp = Obj_orig.modifiers.new("(SSNAM-script) get VG for surface deform mod","VERTEX_WEIGHT_PROXIMITY")
 
 Mod_vwp.vertex_group = VG_vwp.name
 Mod_vwp.target = Obj_vwpref
@@ -312,7 +315,7 @@ Mod_vwp.min_dist = 1e-08
 
 
 select_objects([Obj_orig])
-Mod_surfdef = Obj_orig.modifiers.new("transfer isolated belly animation","SURFACE_DEFORM")
+Mod_surfdef = Obj_orig.modifiers.new("(SSNAM-script) transfer isolated belly animation","SURFACE_DEFORM")
 Mod_surfdef.target = Obj_bellySB
 Mod_surfdef.vertex_group = VG_vwp.name
 bpy.ops.object.surfacedeform_bind(modifier = Mod_surfdef.name)
@@ -320,11 +323,17 @@ bpy.ops.object.surfacedeform_bind(modifier = Mod_surfdef.name)
 
 
 #This one isn't actually needed, just added it for comfort.
-Mod_cs = Obj_orig.modifiers.new("Corrective Smooth","CORRECTIVE_SMOOTH")
+Mod_cs_general     = Obj_orig.modifiers.new("(SSNAM-script) Corrective Smooth general","CORRECTIVE_SMOOTH")
+Mod_cs_bellybutton = Obj_orig.modifiers.new("(SSNAM-script) Corrective Smooth bellybutton(requires belly button VG)","CORRECTIVE_SMOOTH")
 Mod_surfdef.show_viewport = False
-Mod_cs.rest_source = "BIND"
-O.object.correctivesmooth_bind(modifier = Mod_cs.name)
-Mod_cs.show_viewport = False
+Mod_cs_general.rest_source     = "BIND"
+Mod_cs_bellybutton.rest_source = "BIND"
+O.object.correctivesmooth_bind(modifier = Mod_cs_general.name)
+O.object.correctivesmooth_bind(modifier = Mod_cs_bellybutton.name)
+Mod_cs_general.show_viewport     = False
+Mod_cs_bellybutton.show_viewport = False
+VG_placeholder = Obj_orig.vertex_groups.new(name = "(SSNAM script) empty Placeholder")
+Mod_cs_bellybutton.vertex_group = VG_placeholder.name
 Mod_surfdef.show_viewport = True
 
 
